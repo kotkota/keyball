@@ -1,6 +1,6 @@
 /*
  * keymap.c - Постепенный перенос с ZMK sofle.keymap
- * Шаг 1.3: Исправлены имена кейкодов (CAPS, VOLU, VOLD), убран RESET.
+ * Шаг 1.4: Убрано некорректное использование MOD_CAPS.
  * Только слои и базовые назначения клавиш.
  */
 
@@ -43,7 +43,7 @@
  #define SK_RGUI OSM(MOD_RGUI)
  #define SK_HYPR OSM(MOD_HYPR)
  #define SK_MEH  OSM(MOD_MEH)
- #define SK_CAPS OSM(MOD_CAPS) // Используется на _MEDIA слое
+ // #define SK_CAPS OSM(MOD_CAPS) // Удалено - некорректно
  
  // --- Заглушки для сложных ZMK ---
  #define ZMK_RU_Z KC_Z
@@ -51,14 +51,14 @@
  #define ZMK_PLAYNP KC_MPLY
  #define ZMK_NUMWORD OSL_NUM
  #define ZMK_BOOT QK_BOOT
- #define ZMK_RESET KC_NO // Заменено на KC_NO
+ #define ZMK_RESET KC_NO
  
  // --- Основной массив раскладок ---
  // Используем LAYOUT_universal (псевдоним LAYOUT_no_ball) и передаем 64 аргумента
  const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  
      [_DFLT] = LAYOUT_universal( // Слой 0: Default EN (64 клавиши)
-         // L00-L05            R05-R00 (Правая сторона в обратном порядке!)
+         // L00-L05            R05-R00
          ESC_SYS,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,              KC_BSPC, KC_0,    KC_9,    KC_8,    KC_7,    KC_6,
          // L10-L15            R15-R10
          TAB_CTL,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,              KC_LBRC, KC_P,    KC_O,    KC_I,    KC_U,    KC_Y,
@@ -68,14 +68,13 @@
          GRAVE_STK,KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,   KC_MPLY,   BSLH_STK,KC_SLSH, KC_DOT,  KC_COMM, KC_M,    KC_N,   KC_MUTE,
          // L40-L46            R46-R40
          KC_NO,    KC_DEL,  KC_LGUI, BSPC_FUNC, SPC_NUM, ENT_MEDIA, KC_NO, KC_NO,   KC_DEL,  KC_RGUI, BSPC_FUNC, SPC_NUM, ENT_MEDIA, KC_NO
-         // ^^^ Заменил MT(MOD_CAPS, KC_DEL) на KC_DEL
      ),
  
      [_RU] = LAYOUT_universal( // Слой 1: Russian (64 клавиши, в основном пусто)
          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,           KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,           ZMK_RU_HA,ZMK_RU_Z,KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, // Правая P, [ -> я, х
+         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,           ZMK_RU_HA,ZMK_RU_Z,KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,           KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,   KC_TRNS, KC_QUOT, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, // Правый / -> '
+         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,   KC_TRNS, KC_QUOT, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
      ),
  
@@ -97,7 +96,7 @@
  
       [_FUNC] = LAYOUT_universal( // Слой 4: Function keys and Symbols (64 клавиши)
          KC_TRNS, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,             KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
-         KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,             KC_TRNS, KC_PERC, KC_DLR,  KC_HASH, KC_AT,   KC_EXLM, // KC_DLR здесь корректен
+         KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,             KC_TRNS, KC_PERC, KC_DLR,  KC_HASH, KC_AT,   KC_EXLM,
          KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,            KC_TRNS, KC_RPRN, KC_LPRN, KC_ASTR, KC_AMPR, KC_CIRC,
          KC_SLSH, KC_LPRN, KC_LABK, KC_LBRC, KC_LCBR, MT(MOD_LSFT, KC_BSLS), KC_NO, KC_QUES,KC_PLUS, KC_EQL,  KC_UNDS, KC_MINS, KC_PIPE, KC_TRNS,
          KC_NO,   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_NO,     KC_NO,   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_NO
@@ -105,10 +104,11 @@
  
      [_MEDIA] = LAYOUT_universal( // Слой 5: Media keys and Shortcuts (64 клавиши)
          KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,             KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
-         KC_NO, LSFT(LGUI(KC_1)), LSFT(LGUI(KC_2)), LGUI(LSFT(KC_3)), LSFT(LGUI(KC_4)), LSFT(LGUI(KC_5)), KC_VOLU, KC_VOLD, ZMK_PLAYNP,KC_NO,KC_NO,KC_NO, // Заменены KC__VOLUP/DOWN на KC_VOLU/VOLD
+         KC_NO, LSFT(LGUI(KC_1)), LSFT(LGUI(KC_2)), LGUI(LSFT(KC_3)), LSFT(LGUI(KC_4)), LSFT(LGUI(KC_5)), KC_VOLU, KC_VOLD, ZMK_PLAYNP,KC_NO,KC_NO,KC_NO,
          KC_NO, LCTL(KC_LEFT), LCTL(KC_RIGHT), KC_NO, KC_NO, KC_NO,       KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
          KC_NO, LGUI(KC_Z), LGUI(LSFT(KC_Z)), KC_NO, KC_NO, KC_NO, KC_MUTE,KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO, KC_NO,
-         KC_NO, SK_HYPR, SK_CAPS, KC_DEL,  KC_NO,   KC_NO,   KC_NO,       KC_NO,   SK_HYPR, SK_CAPS, KC_DEL,  KC_NO,   KC_NO, KC_NO
+         KC_NO, SK_HYPR, KC_CAPS, KC_DEL,  KC_NO,   KC_NO,   KC_NO,       KC_NO,   SK_HYPR, KC_CAPS, KC_DEL,  KC_NO,   KC_NO, KC_NO
+         // ^^^ Заменил SK_CAPS на стандартный KC_CAPS
      ),
  
      [_STCKY] = LAYOUT_universal( // Слой 6: Sticky Mods Layer (64 клавиши)
