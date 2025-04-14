@@ -1,7 +1,7 @@
 /*
  * keymap.c - Постепенный перенос с ZMK sofle.keymap
- * Шаг 1.5: Исправлено отзеркаливание правой половины (обратный порядок аргументов для Rxx).
- * Только слои и базовые назначения клавиш.
+ * Шаг 1.6: Возврат к правильному (не обратному) порядку аргументов для правой половины.
+ * Исправлены кейкоды, убран RESET. Только слои и базовые назначения клавиш.
  */
 
  #include QMK_KEYBOARD_H
@@ -54,76 +54,76 @@
  
  // --- Основной массив раскладок ---
  // Используем LAYOUT_universal (псевдоним LAYOUT_no_ball)
- // ПРАВАЯ ПОЛОВИНА ПЕРЕДАЕТСЯ В ОБРАТНОМ ПОРЯДКЕ ДЛЯ КАЖДОГО РЯДА!
+ // ПРАВАЯ ПОЛОВИНА ПЕРЕДАЕТСЯ В НОРМАЛЬНОМ ПОРЯДКЕ (R00..R05, R10..R15, ...)
  const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  
-     [_DFLT] = LAYOUT_universal( // Слой 0: Default EN (Исправлен порядок Rxx)
-         // L00-L05            R05,      R04,     R03,     R02,     R01,     R00
-         ESC_SYS,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,              KC_BSPC, KC_0,    KC_9,    KC_8,    KC_7,    KC_6,
-         // L10-L15            R15,      R14,     R13,     R12,     R11,     R10
-         TAB_CTL,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,              KC_LBRC, KC_P,    KC_O,    KC_I,    KC_U,    KC_Y,
-         // L20-L25            R25,      R24,       R23,     R22,     R21,     R20
-         KC_LCTL,  A_LSFT,  S_LCTL,  D_LALT,  F_LGUI,  KC_G,              QUOT_CTL,SCLN_RSFT,L_RCTL, K_RALT,  J_RGUI,  KC_H,
-         // L30-L36            R36,      R35,     R34,     R33,     R32,     R31,     R30
-         GRAVE_STK,KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,   KC_MPLY,   BSLH_STK,KC_SLSH, KC_DOT,  KC_COMM, KC_M,    KC_N,   KC_MUTE,
-         // L40-L46            R46,      R45,       R44,       R43,       R42,       R41,     R40
+     [_DFLT] = LAYOUT_universal( // Слой 0: Default EN (Нормальный порядок Rxx)
+         // L00-L05            R00-R05
+         ESC_SYS,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,              KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_BSPC,
+         // L10-L15            R10-R15
+         TAB_CTL,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,              KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_LBRC, // [
+         // L20-L25            R20-R25
+         KC_LCTL,  A_LSFT,  S_LCTL,  D_LALT,  F_LGUI,  KC_G,              KC_H,    J_RGUI,  K_RALT,  L_RCTL,  SCLN_RSFT,QUOT_CTL,
+         // L30-L36            R30-R36
+         GRAVE_STK,KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,   KC_MPLY,   KC_MUTE, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, BSLH_STK,
+         // L40-L46            R40-R46
          KC_NO,    KC_DEL,  KC_LGUI, BSPC_FUNC, SPC_NUM, ENT_MEDIA, KC_NO, KC_NO,   ENT_MEDIA,SPC_NUM, BSPC_FUNC, KC_RGUI, KC_DEL,  KC_NO
      ),
  
-     [_RU] = LAYOUT_universal( // Слой 1: Russian (Исправлен порядок Rxx)
+     [_RU] = LAYOUT_universal( // Слой 1: Russian (Нормальный порядок Rxx)
          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,           KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,           KC_TRNS, ZMK_RU_Z,ZMK_RU_HA,KC_TRNS, KC_TRNS, KC_TRNS,
+         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,           KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, ZMK_RU_Z,ZMK_RU_HA, // R14(P)=я, R15([)=х
          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,           KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_QUOT, KC_TRNS,
+         KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_QUOT, KC_TRNS, // R35(')='
          KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
      ),
  
-     [_GAME] = LAYOUT_universal( // Слой 2: Gaming (Исправлен порядок Rxx)
-         KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,              KC_MINS, KC_0,    KC_9,    KC_8,    KC_7,    KC_6,
-         KC_T,    KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,              KC_EQL,  KC_P,    KC_O,    KC_I,    KC_U,    KC_Y,
-         KC_G,    KC_LSFT, KC_A,    KC_S,    KC_D,    KC_F,              KC_LBRC, KC_SCLN, KC_L,    KC_K,    KC_J,    KC_H,
-         KC_B,    KC_LCTL, KC_Z,    KC_X,    KC_C,    KC_V,    KC_NO,     KC_RBRC, KC_SLSH, KC_DOT,  KC_COMM, KC_M,    KC_N,    KC_TRNS,
+     [_GAME] = LAYOUT_universal( // Слой 2: Gaming (Нормальный порядок Rxx)
+         KC_ESC,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,              KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_MINS,
+         KC_T,    KC_TAB,  KC_Q,    KC_W,    KC_E,    KC_R,              KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_EQL,
+         KC_G,    KC_LSFT, KC_A,    KC_S,    KC_D,    KC_F,              KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_LBRC,
+         KC_B,    KC_LCTL, KC_Z,    KC_X,    KC_C,    KC_V,    KC_NO,     KC_TRNS, KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RBRC,
          KC_NO,   KC_I,    KC_H,    KC_G,    KC_SPC,  KC_ENT,  KC_NO,     KC_NO,   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_NO
      ),
  
-     [_NUM] = LAYOUT_universal( // Слой 3: Numbers and Navigation (Исправлен порядок Rxx)
+     [_NUM] = LAYOUT_universal( // Слой 3: Numbers and Navigation (Нормальный порядок Rxx)
          KC_TRNS, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,             KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
          KC_TRNS, KC_NO,   KC_P7,   KC_P8,   KC_P9, MT(MOD_LSFT, KC_PAST), KC_HOME,LALT(KC_LEFT),KC_UP,LALT(KC_RIGHT),KC_END, KC_NO,
-         KC_TRNS, MT(MOD_LSFT, KC_SCLN), MT(MOD_LCTL,KC_P4), MT(MOD_LALT,KC_P5), MT(MOD_LGUI,KC_P6), MT(MOD_LSFT, KC_PSLS), KC_NO, KC_PGUP, KC_LEFT, KC_DOWN, KC_RIGHT, KC_NO,
-         KC_TRNS, KC_PEQL, KC_P1,   KC_P2,   KC_P3,   KC_P0,   KC_NO,     KC_TRNS,KC_PGDN,LGUI(KC_LBRC),LGUI(KC_RBRC),RSFT(RCTL(KC_TAB)),RCTL(KC_TAB),KC_TRNS,
+         KC_TRNS, MT(MOD_LSFT, KC_SCLN), MT(MOD_LCTL,KC_P4), MT(MOD_LALT,KC_P5), MT(MOD_LGUI,KC_P6), MT(MOD_LSFT, KC_PSLS), KC_PGUP, KC_LEFT, KC_DOWN, KC_RIGHT, KC_NO,   KC_NO,
+         KC_TRNS, KC_PEQL, KC_P1,   KC_P2,   KC_P3,   KC_P0,   KC_NO,     KC_TRNS, KC_PGDN,LGUI(KC_LBRC),LGUI(KC_RBRC),RSFT(RCTL(KC_TAB)),RCTL(KC_TAB),KC_TRNS,
          KC_NO,   KC_LPRN, KC_RPRN, KC_PDOT, KC_TRNS, KC_TRNS, KC_NO,     KC_NO,   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_NO
      ),
  
-      [_FUNC] = LAYOUT_universal( // Слой 4: Function keys and Symbols (Исправлен порядок Rxx)
-         KC_TRNS, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,             KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
-         KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,             KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_TRNS,
-         KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,            KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_TRNS,
-         KC_SLSH, KC_LPRN, KC_LABK, KC_LBRC, KC_LCBR, MT(MOD_LSFT, KC_BSLS), KC_NO, KC_TRNS,KC_PIPE, KC_MINS, KC_UNDS, KC_EQL, KC_PLUS, KC_QUES,
+      [_FUNC] = LAYOUT_universal( // Слой 4: Function keys and Symbols (Нормальный порядок Rxx)
+         KC_TRNS, KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,             KC_NO,   KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,
+         KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,             KC_TRNS, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,
+         KC_F7,   KC_F8,   KC_F9,   KC_F10,  KC_F11,  KC_F12,            KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, // Правая home row пуста?
+         KC_SLSH, KC_LPRN, KC_LABK, KC_LBRC, KC_LCBR, MT(MOD_LSFT, KC_BSLS), KC_NO, KC_TRNS,KC_PIPE, KC_MINS, KC_UNDS, KC_EQL,  KC_PLUS, KC_QUES,
          KC_NO,   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_NO,     KC_NO,   KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_NO
      ),
  
-     [_MEDIA] = LAYOUT_universal( // Слой 5: Media keys and Shortcuts (Исправлен порядок Rxx)
+     [_MEDIA] = LAYOUT_universal( // Слой 5: Media keys and Shortcuts (Нормальный порядок Rxx)
          KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,             KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
-         KC_NO, LSFT(LGUI(KC_1)), LSFT(LGUI(KC_2)), LGUI(LSFT(KC_3)), LSFT(LGUI(KC_4)), LSFT(LGUI(KC_5)), KC_NO, KC_NO, ZMK_PLAYNP,KC_VOLD, KC_VOLU, KC_NO,
+         KC_NO, LSFT(LGUI(KC_1)), LSFT(LGUI(KC_2)), LGUI(LSFT(KC_3)), LSFT(LGUI(KC_4)), LSFT(LGUI(KC_5)), KC_NO, KC_NO, KC_NO, ZMK_PLAYNP,KC_VOLD, KC_VOLU,
          KC_NO, LCTL(KC_LEFT), LCTL(KC_RIGHT), KC_NO, KC_NO, KC_NO,       KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
          KC_NO, LGUI(KC_Z), LGUI(LSFT(KC_Z)), KC_NO, KC_NO, KC_NO, KC_MUTE,KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO, KC_NO,
-         KC_NO, SK_HYPR, KC_CAPS, KC_DEL,  KC_NO,   KC_NO,   KC_NO,       KC_NO,   KC_DEL,  KC_CAPS, SK_HYPR, KC_NO,   KC_NO, KC_NO
+         KC_NO, SK_HYPR, KC_CAPS, KC_DEL,  KC_NO,   KC_NO,   KC_NO,       KC_NO,   KC_CAPS, SK_HYPR, KC_DEL,  KC_NO,   KC_NO, KC_NO // Порядок на R-thumb: ..., KC_DEL, SK_HYPR, KC_CAPS, KC_NO
      ),
  
-     [_STCKY] = LAYOUT_universal( // Слой 6: Sticky Mods Layer (Исправлен порядок Rxx)
+     [_STCKY] = LAYOUT_universal( // Слой 6: Sticky Mods Layer (Нормальный порядок Rxx)
          KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,             KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
          KC_NO,   KC_NO, LGUI(KC_LEFT), LGUI(KC_RIGHT), LGUI(KC_R), LGUI(KC_T), KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
          SK_HYPR, SK_LSFT, SK_LCTL, SK_LALT, SK_LGUI, LGUI(KC_G),          KC_NO,   SK_RGUI, SK_RALT, SK_RCTL, SK_RSFT, SK_HYPR,
          KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,     KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO, KC_NO,
-         KC_NO,   KC_TRNS, TO(_DFLT), TO(_RU), ZMK_NUMWORD, KC_TRNS, KC_NO, KC_NO,   KC_TRNS, TO(_DFLT), TO(_RU), KC_TRNS, KC_TRNS, KC_NO
+         KC_NO,   KC_TRNS, TO(_DFLT), TO(_RU), ZMK_NUMWORD, KC_TRNS, KC_NO, KC_NO,   TO(_RU), TO(_DFLT), KC_TRNS, KC_TRNS, KC_TRNS, KC_NO
      ),
  
-     [_SYS] = LAYOUT_universal( // Слой 7: System Layer (Исправлен порядок Rxx)
+     [_SYS] = LAYOUT_universal( // Слой 7: System Layer (Нормальный порядок Rxx)
          KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,             KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
          KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,             KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
          KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,             KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,
          ZMK_RESET,KC_NO,  KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,     KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO,   KC_NO, KC_NO,
-         KC_NO,   KC_NO,   KC_NO,   ZMK_BOOT,ZMK_BOOT,KC_NO,   KC_NO,     KC_NO,   KC_NO,   ZMK_BOOT,ZMK_BOOT,KC_NO,   KC_NO, KC_NO
+         KC_NO,   KC_NO,   KC_NO,   ZMK_BOOT,ZMK_BOOT,KC_NO,   KC_NO,     KC_NO,   ZMK_BOOT,ZMK_BOOT,KC_NO,   KC_NO,   KC_NO, KC_NO
      )
  };
  
